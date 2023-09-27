@@ -37,7 +37,7 @@ def export_env_var():
 
     ACLOCAL_FLAGS = "ACLOCAL_FLAGS"
     os.environ.setdefault(ACLOCAL_FLAGS, "")
-    os.environ[ACLOCAL_FLAGS] += f"-I {install_dir}/share/aclocal"
+    # os.environ[ACLOCAL_FLAGS] += f"-I {install_dir}/share/aclocal"
 
     GI_TYPELIB_PATH = "GI_TYPELIB_PATH"
     os.environ.setdefault(GI_TYPELIB_PATH, "")

@@ -94,7 +94,7 @@ class Module:
         def worker(m, x):
             os.chdir(third_party_dir)
             os.chdir(m.path)
-            run(f"git push --set-upstream origin {USERNAME} || true")
+            # run(f"git push --set-upstream origin {USERNAME} || true")
 
         self.recurse(worker)
 
