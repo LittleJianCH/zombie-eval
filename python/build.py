@@ -7,7 +7,7 @@ import getpass
 
 IS_NIGHTLY = False
 if IS_NIGHTLY:
-    USERNAME = "master"
+    USERNAME = "littlejian"
 else:
     USERNAME = getpass.getuser()
 

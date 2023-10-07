@@ -79,13 +79,21 @@ def draw_pic():
     differents = []
     x = []
 
-    times = 4
+    times = 5
 
-    memory = 600000
-    gap = (60000000 - memory) / times
+    raw_data = []
+
+    # memories = [927686448, 1027686448, 1427686448]
+    memory = 1427686448
+    gap = int((1427686448 - 1900000) / (times - 1))
     eviction_count = []
-    for i in range(times):
+    recompute = []
+    for _ in range(times):
         x.append(memory)
+        
+        # when there's no recompute, recompute.log won't be created
+        with open("recompute.log", "w") as f:
+            f.write("0\n")
 
         set_zombie_memory(memory)
         unuse_zombie()
@@ -96,26 +104,36 @@ def draw_pic():
         zombieT = run_multi_eval()
         zombie_times.append(zombieT)
 
+        raw_data.append((memory, zombieT))
+
         differents.append(zombieT - baselineT)
 
         with open("evction_count.log", "r") as f:
             eviction_count.append(int(f.readline()))
+        
+        with open("recompute.log", "r") as f:
+            recompute.append(int(f.readline()))
 
-        memory = memory + gap
+        memory = memory - gap
     
     fig, ax = plt.subplots()
     bx = ax.twinx()
+    cx = ax.twinx()
 
-    ax.plot(x, baseline_times, label='Baseline')
-    ax.plot(x, zombie_times, label='Zombie')
-    ax.plot(x, differents, label='Different')
-    bx.plot(x, eviction_count, label='Eviction Count')
+    ax.plot(x, baseline_times, label='Baseline', color='red')
+    ax.plot(x, zombie_times, label='Zombie', color='goldenrod')
+    ax.plot(x, differents, label='Different', color='green')
+    bx.plot(x, eviction_count, label='Eviction Count', color='dimgrey')
+    cx.plot(x, recompute, label="Recompute", color='blue')
 
     ax.legend()
     bx.legend()
 
     plt.savefig("pic.png")
     plt.show()
+
+    with open("raw_data.log", "w") as f:
+        f.write(str(raw_data))
 
 def ng():
     dt = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -129,7 +147,7 @@ def ng():
     data = {}
 
     set_zombie_score(18438684064490847880)
-    set_zombie_memory(200000)
+    set_zombie_memory(int(5e6))
 
     unuse_zombie()
     run_single_eval("baseline", data)
