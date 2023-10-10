@@ -5,11 +5,7 @@ from common import *
 import sys
 import getpass
 
-IS_NIGHTLY = False
-if IS_NIGHTLY:
-    USERNAME = "littlejian"
-else:
-    USERNAME = getpass.getuser()
+USERNAME = getpass.getuser()
 
 DEBUG = True
 
@@ -187,5 +183,5 @@ if __name__ == "__main__":
     else:
         assert len(sys.argv) == 2
         assert sys.argv[1] == "nightly"
-        IS_NIGHTLY = True
+        USERNAME = "littlejian"
         setup()
