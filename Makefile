@@ -9,7 +9,7 @@ build:
 	python3 python/build.py
 
 nightly: clean
-	python3 python/build.py pull
+	python3 python/build.py nightly
 	python3 python/nightly.py
 
 clean:

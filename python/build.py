@@ -186,5 +186,6 @@ if __name__ == "__main__":
             setup()
     else:
         assert len(sys.argv) == 2
-        assert sys.argv[1] == "pull"
+        assert sys.argv[1] == "nightly"
+        IS_NIGHTLY = True
         setup()
