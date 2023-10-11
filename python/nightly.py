@@ -66,7 +66,7 @@ def nightly(dry):
 
     with page(path=f"index.html", title="nightly") as doc:
         for cfg in configs:
-            p(f"{cfg} = {data[cfg]}")
+            p(f"{cfg} = {data[str(cfg)]}")
 
         gen_chart(data)
         img(src="chart.png")
