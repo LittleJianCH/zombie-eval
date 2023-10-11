@@ -1,10 +1,11 @@
 import json
 import os
-from national_geographic import *
+from eval import *
 from common import *
 from os import sys
 import dominate
 from dominate.tags import *
+import matplotlib.pyplot as plt
 
 class page(dominate.document):
     def __init__(self, path, *args, **kwargs):
@@ -19,10 +20,37 @@ class page(dominate.document):
         with open(str(self.path), "w") as f:
             f.write(str(self))
 
+def gen_chart(data):
+    fig, ax = plt.subplots()
+    bx = ax.twinx()
+
+    baseline_times = []
+    zombie_times = []
+    for config, value in data:
+        if config["use"] == 0:
+            baseline_times.append(config["memory"], value)
+        else:
+            zombie_times.append(config["memory"], value)
+
+    ax.legend()
+    bx.legend()
+
+    plt.savefig("chart.png")
+    plt.show()
+
 def nightly(dry):
     cwd = os.getcwd()
 
-    dt = ng()
+    configs = [
+        {"use": 1, "memory": int(1e5)},
+        {"use": 1, "memory": int(1e6)},
+        {"use": 1, "memory": int(5e6)},
+        {"use": 1, "memory": int(1e7)},
+        {"use": 0, "memory": int(1e5)},
+        {"use": 0, "memory": int(1e7)},
+    ]
+
+    dt = run_tests(configs)
 
     out_dir = f"{cwd}/out"
     out_dir_dt = f"{cwd}/out/{dt}"
@@ -37,18 +65,11 @@ def nightly(dry):
     os.chdir(out_dir_dt)
 
     with page(path=f"index.html", title="nightly") as doc:
-        p(f"baseline_used_time = {data['baseline_used_time']}")
-        p(f"zombie_used_time = {data['zombie_used_time']}")
-        p(f"diff = {data['diff']}")
-        run(f"cp {log_dir_dt}/baseline.jpeg ./")
-        run(f"cp {log_dir_dt}/zombie.jpeg ./")
-        run(f"cp {log_dir_dt}/delta.jpeg ./")
-        img(src="baseline.jpeg")
-        p("baseline")
-        img(src="zombie.jpeg")
-        p("zombie")
-        img(src="delta.jpeg")
-        p("delta")
+        for cfg in configs:
+            p(f"{cfg} = {data[cfg]}")
+
+        gen_chart(data)
+        img(src="chart.png")
 
     os.chdir(out_dir)
 
