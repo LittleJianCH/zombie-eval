@@ -29,9 +29,9 @@ def gen_chart(data):
     for _config, value in data.items():
         config = eval(_config)
         if config["use"] == 0:
-            baseline_times.append(config["memory"], value)
+            baseline_times.append((config["memory"], value))
         else:
-            zombie_times.append(config["memory"], value)
+            zombie_times.append((config["memory"], value))
 
     ax.legend()
     bx.legend()
