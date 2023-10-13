@@ -20,21 +20,26 @@ class page(dominate.document):
         with open(str(self.path), "w") as f:
             f.write(str(self))
 
-def gen_chart(data):
+def gen_chart(configs, data):
     fig, ax = plt.subplots()
-    bx = ax.twinx()
 
-    baseline_times = []
-    zombie_times = []
-    for _config, value in data.items():
-        config = eval(_config)
+    baseline_x = []
+    baseline_y = []
+    zombie_x = []
+    zombie_y = []
+    for config in configs:
+        value = data[config]
         if config["use"] == 0:
-            baseline_times.append((config["memory"], value))
+            baseline_x.appned(config["memory"])
+            baseline_y.append(value)
         else:
-            zombie_times.append((config["memory"], value))
+            zombie_x.append(config["memory"])
+            zombie_y.append(value)
+    
+    ax.plot(baseline_x, baseline_y, label='Baseline', color='red')
+    ax.plot(zombie_x, zombie_y, label='Zombie', color='goldenrod')
 
     ax.legend()
-    bx.legend()
 
     plt.savefig("chart.png")
     plt.show()
@@ -69,7 +74,7 @@ def nightly(dry):
         for cfg in configs:
             p(f"{cfg} = {data[str(cfg)]}")
 
-        gen_chart(data)
+        gen_chart(configs, data)
         img(src="chart.png")
 
     os.chdir(out_dir)
