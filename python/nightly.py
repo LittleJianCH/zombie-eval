@@ -30,7 +30,7 @@ def gen_chart(configs, data):
     for config in configs:
         value = data[str(config)]
         if config["use"] == 0:
-            baseline_x.appned(config["memory"])
+            baseline_x.append(config["memory"])
             baseline_y.append(value)
         else:
             zombie_x.append(config["memory"])
