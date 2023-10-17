@@ -30,6 +30,10 @@ def average_timed():
     times = []
     for i in range(3):
         run(f"cp {cwd}/picture/picture.jpeg ./")
+        run(gimp_program + "|| true")
+        
+        with open("process.log", "r") as f:
+            times.append(int(f.readline()))
         times.append(timed(lambda: run(gimp_program + "|| true")))
 
     average_time = sum(times) / len(times)
@@ -44,7 +48,7 @@ def average_timed():
     for i in range(2):
         times.append(sort_list[i][1])
 
-    return sum(times) / len(times)
+    return int(sum(times) / len(times))
 
 def run_with_config(config, data):
     set_zombie(config["use"])
