@@ -48,12 +48,23 @@ def nightly(dry):
     cwd = os.getcwd()
 
     configs = [
+        {"use": 1, "memory": int(1e3)},
+        {"use": 1, "memory": int(5e3)},
+        {"use": 1, "memory": int(1e4)},
+        {"use": 1, "memory": int(3e4)},
+        {"use": 1, "memory": int(5e4)},
+        {"use": 1, "memory": int(8e4)},
         {"use": 1, "memory": int(1e5)},
+        {"use": 1, "memory": int(3e5)},
+        {"use": 1, "memory": int(7e5)},
         {"use": 1, "memory": int(1e6)},
+        {"use": 1, "memory": int(3e6)},
         {"use": 1, "memory": int(5e6)},
         {"use": 1, "memory": int(1e7)},
+        {"use": 1, "memory": int(1e8)},
         {"use": 0, "memory": int(1e5)},
         {"use": 0, "memory": int(1e7)},
+        {"use": 0, "memory": int(1e8)},
     ]
 
     dt = run_tests(configs)
