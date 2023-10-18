@@ -34,7 +34,6 @@ def average_timed():
         
         with open("process.log", "r") as f:
             times.append(int(f.readline()))
-        times.append(timed(lambda: run(gimp_program + "|| true")))
 
     average_time = sum(times) / len(times)
 
