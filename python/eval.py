@@ -28,7 +28,7 @@ def set_zombie_memory(memory):
 
 def average_timed():
     times = []
-    for i in range(3):
+    for i in range(5):
         run(f"cp {cwd}/picture/picture.jpeg ./")
         run(gimp_program + "|| true")
         
@@ -44,7 +44,7 @@ def average_timed():
     sort_list.sort()
 
     times = []
-    for i in range(2):
+    for i in range(3):
         times.append(sort_list[i][1])
 
     return int(sum(times) / len(times))
