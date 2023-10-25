@@ -69,7 +69,10 @@ def nightly(dry):
         {"use": 1, "memory": int(1.5 * 1e9)},
         {"use": 1, "memory": int(2e9)},
         {"use": 0, "memory": int(1e5)},
+        {"use": 0, "memory": int(1e6)},
+        {"use": 0, "memory": int(5e6)},
         {"use": 0, "memory": int(1e7)},
+        {"use": 0, "memory": int(1e8)},
         {"use": 0, "memory": int(2e9)},
     ]
 
