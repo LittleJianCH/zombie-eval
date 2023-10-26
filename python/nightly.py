@@ -28,7 +28,7 @@ def gen_chart(configs, data):
     zombie_x = []
     zombie_y = []
     for config in configs:
-        value = data[str(config)]
+        value = data[str(config)][0] # get time
         if config["use"] == 0:
             baseline_x.append(config["memory"])
             baseline_y.append(value)

@@ -12,6 +12,9 @@ cwd = os.getcwd()
 
 gimp_program = f"{cwd}/_build/bin/gimp-2.10 -i " + " ".join(["-b " + "\'" + x + "\'" for x in programs])
 
+def warpWithMemory(cmd):
+    return '/usr/bin/time -o memory.log -f "%M"' ++ cmd
+
 def timed(f):
     before  = datetime.now()
     f()
@@ -26,14 +29,18 @@ def set_zombie(use):
 def set_zombie_memory(memory):
     os.environ["ZOMBIE_MAX_MEMORY"] = str(memory)
 
-def average_timed():
+def average_time_and_memory():
     times = []
+    memory = []
     for i in range(5):
         run(f"cp {cwd}/picture/picture.jpeg ./")
-        run(gimp_program + "|| true")
+        run(warpWithMemory(gimp_program) + "|| true")
         
         with open("process.log", "r") as f:
             times.append(int(f.readline()))
+        
+        with open("memory.log", "r"):
+            memory.append(int(f.readlines))
 
     average_time = sum(times) / len(times)
 
@@ -47,13 +54,13 @@ def average_timed():
     for i in range(3):
         times.append(sort_list[i][1])
 
-    return int(sum(times) / len(times))
+    return (int(sum(times) / len(times)), memory[0])
 
 def run_with_config(config, data):
     set_zombie(config["use"])
     set_zombie_memory(config["memory"])
 
-    data[str(config)] = average_timed()
+    data[str(config)] = average_time_and_memory()
 
     return data[str(config)]
 
