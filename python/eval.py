@@ -13,7 +13,7 @@ cwd = os.getcwd()
 gimp_program = f"{cwd}/_build/bin/gimp-2.10 -i " + " ".join(["-b " + "\'" + x + "\'" for x in programs])
 
 def warpWithMemory(cmd):
-    return '/usr/bin/time -o memory.log -f "%M"' + cmd
+    return '/usr/bin/time -o memory.log -f "%M" ' + cmd
 
 def timed(f):
     before  = datetime.now()
