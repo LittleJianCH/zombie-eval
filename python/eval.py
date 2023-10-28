@@ -13,7 +13,7 @@ cwd = os.getcwd()
 gimp_program = f"{cwd}/_build/bin/gimp-2.10 -i " + " ".join(["-b " + "\'" + x + "\'" for x in programs])
 
 def warpWithMemory(cmd):
-    return '/usr/bin/time -o memory.log -f "%M" ' + cmd
+    return '/usr/bin/time -o memory_by_time.log -f "%M" ' + cmd
 
 def timed(f):
     before  = datetime.now()
@@ -39,8 +39,8 @@ def average_time_and_memory():
         with open("process.log", "r") as f:
             times.append(int(f.readline()))
         
-        with open("memory.log", "r"):
-            memory.append(int(f.readlines))
+        with open("memory_by_time.log", "r") as f:            
+            memory.append(int(f.readlines()[-1]))
 
     average_time = sum(times) / len(times)
 
