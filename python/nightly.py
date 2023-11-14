@@ -27,17 +27,28 @@ def gen_chart(configs, data):
     baseline_y = []
     zombie_x = []
     zombie_y = []
+    lru_x = []
+    lru_y = []
+
+    # min_value = min([data[str(config)][0] for config in configs])
+
     for config in configs:
-        value = data[str(config)][0] # get time
+        value = data[str(config)][0] # get memory
         if config["use"] == 0:
             baseline_x.append(config["memory"])
             baseline_y.append(value)
         else:
-            zombie_x.append(config["memory"])
-            zombie_y.append(value)
+            if config["policy"] == "zombie":
+                zombie_x.append(config["memory"])
+                zombie_y.append(value)
+            else:
+                lru_x.append(config["memory"])
+                lru_y.append(value)
     
     ax.plot(baseline_x, baseline_y, label='Baseline', color='red')
     ax.plot(zombie_x, zombie_y, label='Zombie', color='goldenrod')
+    ax.plot(lru_x, lru_y, label='LRU', color='blue')
+    # ax.set_ylim(bottom=0)
 
     ax.legend()
 
@@ -48,35 +59,43 @@ def nightly(dry):
     cwd = os.getcwd()
 
     configs = [
-        {"use": 1, "memory": int(1e3)},
-        {"use": 1, "memory": int(5e3)},
-        {"use": 1, "memory": int(1e4)},
-        {"use": 1, "memory": int(3e4)},
-        {"use": 1, "memory": int(5e4)},
-        {"use": 1, "memory": int(8e4)},
-        {"use": 1, "memory": int(1e5)},
-        {"use": 1, "memory": int(3e5)},
-        {"use": 1, "memory": int(7e5)},
-        {"use": 1, "memory": int(1e6)},
-        {"use": 1, "memory": int(3e6)},
-        {"use": 1, "memory": int(5e6)},
-        {"use": 1, "memory": int(1e7)},
-        {"use": 1, "memory": int(1e8)},
-        {"use": 1, "memory": int(5e8)},
-        {"use": 1, "memory": int(1e9)},
-        {"use": 1, "memory": int(1.3 * 1e9)},
-        {"use": 1, "memory": int(1.4 * 1e9)},
-        {"use": 1, "memory": int(1.5 * 1e9)},
-        {"use": 1, "memory": int(2e9)},
-        {"use": 0, "memory": int(1e5)},
-        {"use": 0, "memory": int(1e6)},
-        {"use": 0, "memory": int(5e6)},
-        {"use": 0, "memory": int(1e7)},
-        {"use": 0, "memory": int(1e8)},
-        {"use": 0, "memory": int(2e9)},
+        {"use": 1, "memory": int(2e8), "policy": "zombie"},
+        {"use": 1, "memory": int(3e8), "policy": "zombie"},
+        {"use": 1, "memory": int(4e8), "policy": "zombie"},
+        {"use": 1, "memory": int(5e8), "policy": "zombie"},
+        {"use": 1, "memory": int(6e8), "policy": "zombie"},
+        {"use": 1, "memory": int(7e8), "policy": "zombie"},
+        {"use": 1, "memory": int(8e8), "policy": "zombie"},
+        {"use": 1, "memory": int(9e8), "policy": "zombie"},
+        {"use": 1, "memory": int(1e9), "policy": "zombie"},
+        {"use": 1, "memory": int(11e8), "policy": "zombie"},
+        {"use": 1, "memory": int(12e8), "policy": "zombie"},
+        {"use": 0, "memory": int(2e8), "policy": "none"},
+        {"use": 0, "memory": int(3e8), "policy": "none"},
+        {"use": 0, "memory": int(4e8), "policy": "none"},
+        {"use": 0, "memory": int(5e8), "policy": "none"},
+        {"use": 0, "memory": int(6e8), "policy": "none"},
+        {"use": 0, "memory": int(7e8), "policy": "none"},
+        {"use": 0, "memory": int(8e8), "policy": "none"},
+        {"use": 0, "memory": int(9e8), "policy": "none"},
+        {"use": 0, "memory": int(1e9), "policy": "none"},
+        {"use": 0, "memory": int(11e8), "policy": "none"},
+        {"use": 0, "memory": int(12e8), "policy": "none"},
+        {"use": 1, "memory": int(2e8), "policy": "lru"},
+        {"use": 1, "memory": int(3e8), "policy": "lru"},
+        {"use": 1, "memory": int(4e8), "policy": "lru"},
+        {"use": 1, "memory": int(5e8), "policy": "lru"},
+        {"use": 1, "memory": int(6e8), "policy": "lru"},
+        {"use": 1, "memory": int(7e8), "policy": "lru"},
+        {"use": 1, "memory": int(8e8), "policy": "lru"},
+        {"use": 1, "memory": int(9e8), "policy": "lru"},
+        {"use": 1, "memory": int(1e9), "policy": "lru"},
+        {"use": 1, "memory": int(11e8), "policy": "lru"},
+        {"use": 1, "memory": int(12e8), "policy": "lru"},
     ]
 
     dt = run_tests(configs)
+    # dt = "2023-11-13-17-02-44"
 
     out_dir = f"{cwd}/out"
     out_dir_dt = f"{cwd}/out/{dt}"

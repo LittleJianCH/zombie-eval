@@ -26,13 +26,19 @@ os.environ["GEGL_THREADS"] = "1"
 def set_zombie(use):
     os.environ["USE_ZOMBIE"] = "1" if use else "0"
 
+def choose_eviction_policy(policy):
+    if policy == 'lru':
+        os.environ["USE_LRU"] = "yes"
+    else:
+        os.environ["USE_LRU"] = "no"
+
 def set_zombie_memory(memory):
     os.environ["ZOMBIE_MAX_MEMORY"] = str(memory)
 
 def average_time_and_memory():
     times = []
     memory = []
-    for i in range(5):
+    for i in range(3):
         run(f"cp {cwd}/picture/picture.jpeg ./")
         run(warpWithMemory(gimp_program) + "|| true")
         
@@ -51,7 +57,7 @@ def average_time_and_memory():
     sort_list.sort()
 
     times = []
-    for i in range(3):
+    for i in range(2):
         times.append(sort_list[i][1])
 
     return (int(sum(times) / len(times)), memory[0])
@@ -59,6 +65,7 @@ def average_time_and_memory():
 def run_with_config(config, data):
     set_zombie(config["use"])
     set_zombie_memory(config["memory"])
+    choose_eviction_policy(config["policy"])
 
     data[str(config)] = average_time_and_memory()
 
